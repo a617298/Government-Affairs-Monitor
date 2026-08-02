@@ -1,14 +1,15 @@
-name: Personnel Activity Monitor
+name: Officials Progress Monitor
 
 on:
   schedule:
-    # 每天北京时间 12:00 和 18:00 (UTC 时间为 04:00 和 10:00)
+    # 每天北京时间 12:00 和 18:00 (对应 UTC 时间 04:00 和 10:00)
     - cron: '0 4,10 * * *'
   workflow_dispatch: 
 
 jobs:
   scrape-and-notify:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -26,7 +27,8 @@ jobs:
         pip install -r requirements.txt
         
     - name: Install Playwright Browsers
-      run: playwright install chromium
+      run: |
+        playwright install chromium
         
     - name: Run Monitor Script
       env:
@@ -36,5 +38,5 @@ jobs:
     - name: Commit history back to repo
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
-        commit_message: "chore: update personnel history [skip ci]"
+        commit_message: "chore: update officials scrape history [skip ci]"
         file_pattern: 'history.json'
